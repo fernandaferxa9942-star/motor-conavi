@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body style="background:black;color:lime;font-family:Arial;text-align:center">
+<h1 id="estado">Esperando sistema...</h1>
+
+<script>
+async function check(){
+ let r = await fetch("estado.json?t="+Date.now());
+ let d = await r.json();
+ document.getElementById("estado").innerHTML =
+   (d.up ? "🔥 CONAVI ACTIVO " : "❌ CAIDO ") + d.time;
+}
+setInterval(check,2000);
+</script>
+</body>
+</html>

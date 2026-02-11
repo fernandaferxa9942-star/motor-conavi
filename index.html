@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <title>Monitor CONAVI</title>
 <style>
-body { font-family: Arial; text-align: center; padding-top: 50px; background:#111; color:white;}
-#estado { font-size: 40px; font-weight: bold;}
+body { font-family: Arial; text-align: center; background:#111; color:white; padding-top:50px;}
+#estado { font-size: 40px; font-weight:bold; }
 </style>
 </head>
 <body>
@@ -15,26 +15,21 @@ body { font-family: Arial; text-align: center; padding-top: 50px; background:#11
 <div id="hora"></div>
 
 <script>
-async function cargar() {
+async function loadStatus() {
   try {
-    let r = await fetch("status.json?" + Date.now());
-    let d = await r.json();
+    const res = await fetch("status.json?" + Date.now());
+    const data = await res.json();
 
-    if (d.up) {
-      document.getElementById("estado").innerHTML = "🟢 ACTIVO";
-    } else {
-      document.getElementById("estado").innerHTML = "🔴 CAÍDO";
-    }
+    document.getElementById("estado").innerHTML = data.up ? "🟢 ACTIVO" : "🔴 CAÍDO";
+    document.getElementById("hora").innerHTML = "Última hora: " + data.time;
 
-    document.getElementById("hora").innerHTML = "Última actualización: " + d.time;
-
-  } catch (e) {
+  } catch(e) {
     document.getElementById("estado").innerHTML = "ERROR leyendo status.json";
   }
 }
 
-cargar();
-setInterval(cargar, 5000);
+loadStatus();
+setInterval(loadStatus, 5000);
 </script>
 
 </body>

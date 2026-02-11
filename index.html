@@ -1,16 +1,31 @@
 <!DOCTYPE html>
 <html>
-<body style="background:black;color:lime;font-family:Arial;text-align:center">
-<h1 id="estado">Esperando sistema...</h1>
+<head>
+<meta charset="UTF-8">
+<title>Monitor CONAVI</title>
+<style>
+body{font-family:Arial;text-align:center;background:#111;color:white}
+.estado{font-size:50px;margin:20px}
+</style>
+</head>
+<body>
+
+<h1>Monitor CONAVI</h1>
+<div id="estado" class="estado">Cargando...</div>
+<div id="hora"></div>
 
 <script>
-async function check(){
- let r = await fetch("estado.json?t="+Date.now());
- let d = await r.json();
- document.getElementById("estado").innerHTML =
-   (d.up ? "🔥 CONAVI ACTIVO " : "❌ CAIDO ") + d.time;
+async function cargar() {
+  let r = await fetch("status.json?"+Date.now());
+  let d = await r.json();
+
+  document.getElementById("estado").innerHTML = d.estado;
+  document.getElementById("hora").innerHTML = "Última revisión: " + d.hora;
 }
-setInterval(check,2000);
+
+cargar();
+setInterval(cargar, 5000);
 </script>
+
 </body>
 </html>

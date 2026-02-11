@@ -1,31 +1,16 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Monitor CONAVI</title>
-<style>
-body{font-family:Arial;text-align:center;background:#111;color:white}
-.estado{font-size:50px;margin:20px}
-</style>
-</head>
-<body>
-
-<h1>Monitor CONAVI</h1>
-<div id="estado" class="estado">Cargando...</div>
-<div id="hora"></div>
-
 <script>
 async function cargar() {
-  let r = await fetch("status.json?"+Date.now());
-  let d = await r.json();
+  try {
+    let r = await fetch("./status.json?"+Date.now());
+    let d = await r.json();
 
-  document.getElementById("estado").innerHTML = d.estado;
-  document.getElementById("hora").innerHTML = "Última revisión: " + d.hora;
+    document.getElementById("estado").innerHTML = d.estado;
+    document.getElementById("hora").innerHTML = "Última: " + d.hora;
+  } catch(e) {
+    document.getElementById("estado").innerHTML = "ERROR JSON";
+  }
 }
 
 cargar();
-setInterval(cargar, 5000);
+setInterval(cargar, 3000);
 </script>
-
-</body>
-</html>
